@@ -5,7 +5,7 @@ import CategoryPage from './pages/CategoryPage';
 import SeriePage from './pages/SeriePage';
 import SerieFormPage from './pages/SerieFormPage';
 import CategoryFormPage from "./pages/CategoryFormPage";
-
+import './App.css'
 
 function App() {
   return (

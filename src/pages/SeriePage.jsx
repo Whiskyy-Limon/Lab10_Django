@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 function SeriePage() {
   const navigate = useNavigate();
 
+  const [serieFilter, setSerieFilter] = useState();
+
   const [series, setSeries] = useState([
     { cod: 1, nom: "Friends", cat: "Comedy", img: "friends" },
     { cod: 2, nom: "Law & Order", cat: "Drama", img: "law-and-order" },
@@ -28,6 +30,11 @@ function SeriePage() {
     navigate(`/series/new?edit=${codigo}`); // Puedes mejorar esto luego para precargar los datos
   };
 
+  const onChangeSerieFilter = (e) => {
+    setSerieFilter(e.target.value);
+    console.log(e.target.value);
+  }
+  
   return (
     <>
       <HeaderComponent />
@@ -40,8 +47,29 @@ function SeriePage() {
             </button>
           </div>
         </div>
+        <div>
+          <h5>Buscar</h5>
+          <input type="text" value={serieFilter} onChange={onChangeSerieFilter}/>
+        </div>
+        <br />
         <div className="row">
-          {series.map((serie) => (
+          {serieFilter ? <>
+            {series.filter(item => item.nom.toLowerCase().includes(serieFilter.toLowerCase()))
+            .map((serie) => (
+              <div key={serie.cod} className="col-md-3 mb-3">
+              <SerieComponent
+                codigo={serie.cod}
+                nombre={serie.nom}
+                categoria={serie.cat}
+                imagen={serie.img}
+                onEliminar={handleEliminar}
+                onEditar={handleEditar}
+              />
+              </div>              
+            )
+          )}</>
+          :
+          <>{series.map((serie) => (
             <div key={serie.cod} className="col-md-3 mb-3">
               <SerieComponent
                 codigo={serie.cod}
@@ -52,7 +80,8 @@ function SeriePage() {
                 onEditar={handleEditar}
               />
             </div>
-          ))}
+          ))}</>
+          }
         </div>
       </div>
     </>
